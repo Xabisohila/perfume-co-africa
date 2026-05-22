@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js build output
+.next/
+out/
+
+# Env files — never commit secrets
+.env
+.env*.local
+
+# Local SQLite database
+lib/*.db
+lib/*.db-shm
+lib/*.db-wal
+
+# Vercel
+.vercel
+
+# OS / editor
+.DS_Store
+*.pem
+.idea/
+.vscode/settings.json
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Prisma (unused — kept for reference only)
+lib/schema.prisma

@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens ── */
+:root {
+  --gold: #c8a96b;
+  --gold-light: #e2c98a;
+  --background: #f8f6f2;
+  --text: #111111;
+  --text-secondary: #6b6b6b;
+}
+
+/* ── Base reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Lenis handles smooth scroll — native is disabled */
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Gold scrollbar ── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #c8a96b;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a88b52;
+}
+
+/* ── Gold shimmer button ── */
+.btn-gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    #c8a96b 0%,
+    #e2c98a 30%,
+    #f5e0a8 50%,
+    #e2c98a 70%,
+    #c8a96b 100%
+  );
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-gold-shimmer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(200, 169, 107, 0.45);
+}
+
+/* ── Gold text gradient ── */
+.text-gold-gradient {
+  background: linear-gradient(130deg, #c8a96b, #e8d098, #c8a96b);
+  background-size: 200%;
+  animation: shimmer 4s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Glassmorphism ── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.glass-card-dark {
+  background: rgba(10, 10, 10, 0.55);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(200, 169, 107, 0.18);
+}
+
+/* ── Floating animation ── */
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ── Glow pulse ── */
+.glow-pulse {
+  animation: glow-pulse 2.8s ease-in-out infinite;
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(200, 169, 107, 0.35); }
+  50%       { box-shadow: 0 0 45px rgba(200, 169, 107, 0.75); }
+}
+
+/* ── Product card image zoom ── */
+.product-card:hover .product-card-img {
+  transform: scale(1.08);
+}
+
+/* ── Mobile sticky CTA ── */
+.sticky-mobile-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 12px 16px 16px;
+  background: rgba(6, 6, 6, 0.97);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(200, 169, 107, 0.2);
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+/* ── WhatsApp button ── */
+.whatsapp-btn {
+  position: fixed;
+  bottom: 84px;
+  right: 20px;
+  z-index: 40;
+}
+@media (min-width: 768px) {
+  .whatsapp-btn {
+    bottom: 32px;
+  }
+}
+
+/* ── Marquee pause on hover ── */
+.animate-marquee:hover,
+.animate-marquee-reverse:hover,
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+
+/* ── Keyframes ── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
