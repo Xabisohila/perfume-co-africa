@@ -4,14 +4,11 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ShoppingBag, Lock, ChevronLeft, Loader2 } from "lucide-react";
 import type { CartItem } from "@/lib/cartContext";
+import { fmt } from "@/lib/utils";
 
 const SHIPPING_COST = 90;
 const FREE_SHIPPING_AT = 3;
 const STORAGE_KEY = "tpca_cart";
-
-function fmt(n: number) {
-  return `R${n.toLocaleString("en-ZA")}`;
-}
 
 export default function CheckoutPage() {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -203,7 +200,7 @@ export default function CheckoutPage() {
                 ) : (
                   <>
                     <Lock className="w-4 h-4" />
-                    Pay {fmt(total)} via PayFast
+                    Secure Checkout — {fmt(total)}
                   </>
                 )}
               </motion.button>

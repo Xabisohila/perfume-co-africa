@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Star, ShoppingBag, Check, Minus, Plus } from "lucide-react";
 import { stagger, staggerItem, viewFadeUp } from "@/lib/animations";
-import { cn } from "@/lib/utils";
+import { cn, fmt } from "@/lib/utils";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { useCart } from "@/lib/cartContext";
 
@@ -76,9 +76,6 @@ const products = [
   },
 ];
 
-function formatPrice(n: number) {
-  return `R${n.toLocaleString("en-ZA")}`;
-}
 
 function ProductCard({ p }: { p: (typeof products)[0] }) {
   const [qty, setQty] = useState(1);
@@ -176,10 +173,10 @@ function ProductCard({ p }: { p: (typeof products)[0] }) {
         <div className="flex items-baseline justify-between mb-4">
           <div className="flex items-baseline gap-2">
             <span className="font-playfair text-2xl font-bold text-text-primary">
-              {formatPrice(p.price)}
+              {fmt(p.price)}
             </span>
             <span className="text-text-secondary text-sm line-through font-inter">
-              {formatPrice(p.originalPrice)}
+              {fmt(p.originalPrice)}
             </span>
           </div>
           <span className="text-xs font-inter font-bold text-white bg-green-600 px-2.5 py-1 rounded-full">

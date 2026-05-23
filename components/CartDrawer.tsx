@@ -4,13 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { X, Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "@/lib/cartContext";
+import { fmt } from "@/lib/utils";
 
 const SHIPPING_COST = 90;
 const FREE_SHIPPING_AT = 3;
-
-function fmt(n: number) {
-  return `R${n.toLocaleString("en-ZA")}`;
-}
 
 export default function CartDrawer() {
   const { state, dispatch, totalItems, totalPrice } = useCart();
