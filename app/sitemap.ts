@@ -6,15 +6,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: BASE,
-      lastModified: new Date(),
+      lastModified: new Date("2026-05-24"),
       changeFrequency: "weekly",
       priority: 1,
-    },
-    {
-      url: `${BASE}/checkout`,
-      lastModified: new Date(),
-      changeFrequency: "never",
-      priority: 0.3,
     },
   ];
 }

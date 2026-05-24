@@ -17,7 +17,7 @@ const testimonials = [
   },
   {
     name: "Chidi Eze",
-    location: "Abuja, Nigeria",
+    location: "Johannesburg, South Africa",
     rating: 5,
     text: "Midnight Oud is INSANE. I walked into a meeting and my boss said 'whoever is wearing that, good choice.' This fragrance commands respect. Period.",
     product: "Midnight Oud",
@@ -26,7 +26,7 @@ const testimonials = [
   },
   {
     name: "Fatima Al-Hassan",
-    location: "Kano, Nigeria",
+    location: "Cape Town, South Africa",
     rating: 5,
     text: "Royal Amber is my forever scent. It lasts from morning prayers to late evening events. My husband can't stop complimenting me. Absolutely divine.",
     product: "Royal Amber",
