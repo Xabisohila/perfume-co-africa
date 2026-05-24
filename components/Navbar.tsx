@@ -66,10 +66,10 @@ export default function Navbar() {
             {/* Logo */}
             <a href="#" className="group flex flex-col leading-none">
               <span className="font-playfair font-bold text-white tracking-[0.2em] text-[0.8rem] sm:text-[0.85rem] group-hover:text-gold transition-colors duration-300">
-                THE PERFUME CO.
+                THE PERFUME
               </span>
               <span className="text-gold tracking-[0.35em] font-inter font-medium text-[0.6rem] sm:text-[0.65rem]">
-                AFRICA
+                CO.
               </span>
             </a>
 
