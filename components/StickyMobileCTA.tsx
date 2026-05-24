@@ -28,7 +28,7 @@ export default function StickyMobileCTA() {
             className="btn-gold-shimmer flex items-center justify-center gap-3 w-full text-black font-inter font-bold text-base py-4 rounded-xl"
           >
             <ShoppingBag className="w-5 h-5" />
-            Get Yours — From ₦8,000
+            Get Yours — From R299
           </a>
           <p className="text-white/30 text-[10px] font-inter text-center mt-2">
             Free shipping · Secure checkout

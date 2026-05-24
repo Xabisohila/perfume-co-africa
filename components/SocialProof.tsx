@@ -7,8 +7,8 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 
 const testimonials = [
   {
-    name: "Amara Okafor",
-    location: "Lagos, Nigeria",
+    name: "Liyolatha Hila",
+    location: "East London, South Africa",
     rating: 5,
     text: "I got stopped twice in one day asking what perfume I was wearing. My coworker literally said 'you smell like money.' I'm never going back to my old perfume.",
     product: "Vanilla Ray",
@@ -34,8 +34,8 @@ const testimonials = [
     avatarBg: "from-rose-600 to-rose-900",
   },
   {
-    name: "Kwame Asante",
-    location: "Accra, Ghana",
+    name: "Kuhle Sizi",
+    location: "East London, South Africa",
     rating: 5,
     text: "This smells exactly like a fragrance I tried at a designer store in London that cost 10× more. Unbelievable value. I've ordered for my whole family.",
     product: "Noir Intense",
@@ -43,8 +43,8 @@ const testimonials = [
     avatarBg: "from-emerald-700 to-emerald-900",
   },
   {
-    name: "Ngozi Williams",
-    location: "Port Harcourt, Nigeria",
+    name: "Yonela Nduku",
+    location: "East London, South Africa",
     rating: 5,
     text: "Bought it as a gift for my husband. He called from work to say 'babe, the guys at the office won't stop asking about my perfume.' Best gift decision ever.",
     product: "Midnight Oud",
@@ -52,8 +52,8 @@ const testimonials = [
     avatarBg: "from-purple-700 to-purple-900",
   },
   {
-    name: "Emeka Obi",
-    location: "Enugu, Nigeria",
+    name: "Simanye Jojo",
+    location: "Gqebera, South Africa",
     rating: 4,
     text: "Premium packaging, fast delivery, and the scent opened the box smelling amazing. I ordered 2 more bottles before I even finished the first.",
     product: "Vanilla Ray",

@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { X, MessageCircle } from "lucide-react";
 
-const WHATSAPP_NUMBER = "2348000000000";
-const WHATSAPP_MESSAGE = "Hi! I'd like to order from The Perfume Co. Africa 🌟";
+const WHATSAPP_NUMBER = "27640713844";
+const WHATSAPP_MESSAGE = "Hi! I'd like to order from The Perfume-Co. 🌟";
 
 export default function FloatingWhatsApp() {
   const [showTooltip, setShowTooltip] = useState(false);
