@@ -25,7 +25,7 @@ const features = [
     number: "03",
     title: "Affordable Premium",
     description:
-      "Smell like a million naira without spending it. Luxury is no longer reserved for a few.",
+      "Smell like a million rand without spending it. Luxury is no longer reserved for a few.",
   },
   {
     icon: MessageCircleHeart,

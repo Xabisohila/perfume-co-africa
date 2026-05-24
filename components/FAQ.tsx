@@ -17,8 +17,8 @@ const faqs = [
     a: "Yes — our perfumes are crafted to evoke the essence of world-class designer fragrances using premium imported fragrance oils. We don't copy or counterfeit — we interpret and create our own unique compositions inspired by global luxury trends.",
   },
   {
-    q: "How long does delivery take?",
-    a: "Within Lagos: 1–2 business days. Other Nigerian states: 2–4 business days. International orders (Ghana, Kenya, South Africa): 5–10 business days. You'll receive a tracking number as soon as your order ships.",
+    q: "How long does delivery take in South Africa?",
+    a: "Major cities (Cape Town, Johannesburg, Durban, Pretoria): 2–3 business days. Other South African provinces: 3–5 business days. You'll receive a tracking number via WhatsApp as soon as your order ships.",
   },
   {
     q: "What is your refund policy?",
@@ -29,8 +29,8 @@ const faqs = [
     a: "Several of our fragrances are perfectly unisex — Vanilla Ray and Royal Amber especially. Midnight Oud leans masculine while Noir Intense is loved by all genders. We label each product with a recommendation, but ultimately wear what makes you feel powerful.",
   },
   {
-    q: "What sizes do the bottles come in?",
-    a: "All our fragrances are available in 50ml and 100ml spray bottles. The 100ml is our best-value option and most popular choice — it typically lasts 4–6 months with daily use.",
+    q: "How do I place an order?",
+    a: "Simply add your chosen fragrances to your cart and tap the WhatsApp button — you'll be connected directly with our team to confirm your order and shipping address. We also accept payment via PayFast for card payments.",
   },
 ];
 
@@ -120,10 +120,10 @@ export default function FAQ() {
             Still have questions?
           </p>
           <p className="text-text-secondary font-inter text-sm mb-5">
-            Our team is available 9am–9pm WAT, 7 days a week.
+            Our team is available 9am–9pm SAST, 7 days a week.
           </p>
           <a
-            href="https://wa.me/2348000000000?text=Hi%2C%20I%20have%20a%20question%20about%20The%20Perfume%20Co.%20Africa"
+            href="https://wa.me/27640713844?text=Hi%2C%20I%20have%20a%20question%20about%20The%20Perfume%20Co.%20Africa"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-[#25D366] text-white font-inter font-semibold text-sm px-7 py-3 rounded-full hover:bg-[#1ebb59] transition-colors"

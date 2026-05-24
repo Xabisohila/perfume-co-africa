@@ -5,7 +5,7 @@ import { useState } from "react";
 import { X, MessageCircle } from "lucide-react";
 
 const WHATSAPP_NUMBER = "27640713844";
-const WHATSAPP_MESSAGE = "Hi! I'd like to order from The Perfume-Co. 🌟";
+const WHATSAPP_MESSAGE = "Hi! I'd like to order from The Perfume Co. Africa 🌟";
 
 export default function FloatingWhatsApp() {
   const [showTooltip, setShowTooltip] = useState(false);

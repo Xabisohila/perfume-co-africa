@@ -76,6 +76,9 @@ export default function Hero() {
               className="font-playfair text-white leading-[1.08] mb-7"
               style={{ fontSize: "clamp(2.6rem, 5.5vw, 4.4rem)" }}
             >
+              <span className="block font-inter text-white/35 tracking-[0.35em] uppercase font-medium mb-4" style={{ fontSize: "0.7rem" }}>
+                Luxury Fragrances · South Africa
+              </span>
               Smell Expensive.
               <br />
               <em className="not-italic text-gold-gradient">Be Unforgettable.</em>
