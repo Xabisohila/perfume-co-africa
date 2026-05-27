@@ -23,7 +23,8 @@ export default function CartDrawer() {
     setAddress("");
   };
 
-  const shipping = totalItems >= FREE_SHIPPING_AT ? 0 : SHIPPING_COST;
+  const hasFreeShippingItem = items.some((i) => i.price >= 599);
+  const shipping = totalItems >= FREE_SHIPPING_AT || hasFreeShippingItem ? 0 : SHIPPING_COST;
   const orderTotal = totalPrice + shipping;
   const bottlesUntilFree = FREE_SHIPPING_AT - totalItems;
 
@@ -271,7 +272,7 @@ export default function CartDrawer() {
                             <span className="text-gold font-semibold">
                               {bottlesUntilFree} more bottle{bottlesUntilFree > 1 ? "s" : ""}
                             </span>{" "}
-                            to unlock free delivery
+                            to unlock free delivery — or choose a R599 fragrance
                           </p>
                           <div className="h-1 rounded-full bg-white/10 overflow-hidden">
                             <motion.div
@@ -286,7 +287,9 @@ export default function CartDrawer() {
                         <div className="bg-gold/8 border border-gold/20 rounded-xl px-4 py-3 flex items-center gap-2">
                           <span className="text-base">🎉</span>
                           <p className="text-gold font-inter text-xs font-semibold">
-                            You&apos;ve unlocked free delivery!
+                            {hasFreeShippingItem
+                              ? "Free delivery included with your R599 fragrance!"
+                              : "You've unlocked free delivery!"}
                           </p>
                         </div>
                       )}

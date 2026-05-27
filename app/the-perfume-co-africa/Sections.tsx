@@ -9,13 +9,11 @@ import {
   Sparkles,
   Award,
   Quote,
-  CheckCircle2,
   ChevronDown,
 } from "lucide-react";
 import {
   fadeUp,
   viewFadeUp,
-  viewSlideLeft,
   stagger,
   staggerItem,
 } from "@/lib/animations";
@@ -70,15 +68,13 @@ const reviews = [
     product: "Inspired by One Million",
     text: "I got stopped twice in one day asking what perfume I was wearing. My coworker literally said 'you smell like money.' I'm never going back to my old perfume.",
     rating: 5,
-    featured: true,
   },
   {
     name: "Chidi E.",
     location: "Johannesburg",
     product: "Inspired by Armani Black Oud",
-    text: "I walked into a meeting and my boss said 'whoever is wearing that, good choice.' This fragrance commands respect.",
+    text: "I walked into a meeting and my boss said 'whoever is wearing that, good choice.' This fragrance commands respect. Period.",
     rating: 5,
-    featured: false,
   },
   {
     name: "Fatima A.",
@@ -86,7 +82,34 @@ const reviews = [
     product: "Inspired by Boss Orange",
     text: "Lasts from morning prayers to late evening events. My husband can't stop complimenting me. Absolutely divine.",
     rating: 5,
-    featured: false,
+  },
+  {
+    name: "Sipho N.",
+    location: "Pretoria",
+    product: "Inspired by One Million",
+    text: "My wife keeps stealing my perfume. That's when you know you've found something special. The Perfume Co Africa delivered exactly that.",
+    rating: 5,
+  },
+  {
+    name: "Zanele D.",
+    location: "Johannesburg",
+    product: "Inspired by Boss Orange",
+    text: "I was sceptical about buying online but the scent arrived perfectly packaged and smells incredible. Already ordered my second bottle.",
+    rating: 5,
+  },
+  {
+    name: "Yusuf A.",
+    location: "Cape Town",
+    product: "Inspired by Armani Black Oud",
+    text: "Strong enough to fill a room, but never overpowering. Exactly what I was looking for. Fast delivery — came in 2 days!",
+    rating: 5,
+  },
+  {
+    name: "Precious K.",
+    location: "Durban",
+    product: "Inspired by Gucci Oud",
+    text: "Wore this to a family function and my aunties were asking where I got it all night. Absolutely in love with this scent.",
+    rating: 5,
   },
 ];
 
@@ -284,10 +307,10 @@ export function TickerStrip() {
 
 export function TrustPillars() {
   return (
-    <section className="bg-white py-20 lg:py-28 overflow-hidden">
+    <section id="why-us" className="bg-white py-20 lg:py-28 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div {...viewFadeUp(0)} className="text-center mb-14">
+        <motion.div {...viewFadeUp(0)} viewport={{ once: false, margin: "-60px" }} className="text-center mb-14">
           <p className="text-[10px] font-inter font-bold tracking-[0.3em] uppercase text-gold mb-3">
             Our Promise
           </p>
@@ -305,7 +328,7 @@ export function TrustPillars() {
           variants={stagger}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
+          viewport={{ once: false, margin: "-60px" }}
           className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {trustPillars.map((p, i) => (
@@ -334,18 +357,66 @@ export function TrustPillars() {
   );
 }
 
+/* ─── Google G icon ─────────────────────────────────────────────────── */
+
+function GoogleG() {
+  return (
+    <svg viewBox="0 0 24 24" className="w-5 h-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg">
+      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+    </svg>
+  );
+}
+
+/* ─── ReviewCard ─────────────────────────────────────────────────────── */
+
+function ReviewCard({ r }: { r: (typeof reviews)[0] }) {
+  return (
+    <div className="w-[300px] flex-shrink-0 bg-white rounded-2xl p-6 border border-black/6 shadow-sm flex flex-col select-none">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex gap-0.5">
+          {[...Array(r.rating)].map((_, i) => (
+            <Star key={i} className="w-3.5 h-3.5 fill-gold text-gold" />
+          ))}
+        </div>
+        <div className="flex items-center gap-1.5">
+          <GoogleG />
+          <span className="text-[10px] font-inter text-text-secondary/60">Google</span>
+        </div>
+      </div>
+      <Quote className="w-5 h-5 text-gold/20 mb-2" />
+      <p className="text-text-secondary font-inter text-sm leading-relaxed flex-1 mb-5">
+        {r.text}
+      </p>
+      <div className="flex items-end justify-between border-t border-black/5 pt-4">
+        <div>
+          <p className="font-inter font-semibold text-text-primary text-sm leading-none mb-0.5">{r.name}</p>
+          <p className="text-text-secondary text-xs font-inter">{r.location}</p>
+        </div>
+        <span className="text-[9px] font-inter font-semibold uppercase tracking-[0.12em] text-gold/70 bg-gold/8 border border-gold/15 px-2 py-1 rounded-full whitespace-nowrap ml-3">
+          {r.product}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Reviews ────────────────────────────────────────────────────────── */
 
 export function Reviews() {
-  const [featured, ...rest] = reviews;
+  const row1 = [...reviews, ...reviews];
+  const row2 = [...[...reviews].reverse(), ...[...reviews].reverse()];
 
   return (
-    <section className="bg-luxury py-20 lg:py-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header with aggregate */}
+    <section id="reviews" className="bg-luxury py-20 lg:py-28 overflow-hidden">
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <motion.div
           {...viewFadeUp(0)}
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14"
+          viewport={{ once: false, margin: "-60px" }}
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-6"
         >
           <div>
             <p className="text-[10px] font-inter font-bold tracking-[0.3em] uppercase text-gold mb-3">
@@ -359,97 +430,47 @@ export function Reviews() {
               <em className="not-italic text-gold">The Perfume Co Africa</em>
             </h2>
           </div>
-          {/* Aggregate badge */}
-          <div className="flex-shrink-0 flex items-center gap-3 bg-white rounded-2xl px-6 py-4 shadow-sm border border-black/5 self-start sm:self-auto">
-            <div>
-              <p className="font-playfair text-text-primary font-bold text-2xl leading-none">4.9</p>
-              <div className="flex gap-0.5 mt-1">
-                {[...Array(5)].map((_, idx) => (
-                  <Star key={idx} className="w-3 h-3 fill-gold text-gold" />
-                ))}
+
+          {/* Badges row */}
+          <div className="flex items-center gap-3 flex-wrap">
+            {/* Google badge */}
+            <div className="flex items-center gap-3 bg-white rounded-2xl px-5 py-3.5 shadow-sm border border-black/5">
+              <GoogleG />
+              <div>
+                <p className="font-inter font-bold text-text-primary text-xs leading-none mb-1">Google Reviews</p>
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3 h-3 fill-gold text-gold" />
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="h-8 w-px bg-black/8" />
-            <div>
-              <p className="text-text-primary font-inter font-semibold text-sm leading-none mb-0.5">900+</p>
-              <p className="text-text-secondary font-inter text-xs">Verified reviews</p>
+              <div className="h-8 w-px bg-black/8" />
+              <div>
+                <p className="font-playfair text-text-primary font-bold text-xl leading-none">4.9</p>
+                <p className="text-text-secondary text-[10px] font-inter mt-0.5">900+ reviews</p>
+              </div>
             </div>
           </div>
         </motion.div>
+      </div>
 
-        {/* Grid: 1 featured large + 2 smaller */}
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Featured */}
-          <motion.div
-            {...viewSlideLeft(0)}
-            className="lg:col-span-1 bg-dark rounded-3xl p-8 flex flex-col border border-gold/12 relative overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(200,169,107,0.06)_0%,transparent_70%)]" />
-            <div className="relative z-10 flex flex-col flex-1">
-              <div className="flex items-center justify-between mb-5">
-                <div className="flex gap-0.5">
-                  {[...Array(featured.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-gold text-gold" />
-                  ))}
-                </div>
-                <div className="flex items-center gap-1 text-gold/50 text-[10px] font-inter">
-                  <CheckCircle2 className="w-3 h-3" />
-                  Verified
-                </div>
-              </div>
-              <Quote className="w-7 h-7 text-gold/20 mb-4" />
-              <p className="text-white/70 font-inter text-sm leading-[1.85] flex-1 mb-6">
-                {featured.text}
-              </p>
-              <div className="border-t border-white/8 pt-5">
-                <p className="font-inter font-semibold text-white text-sm">{featured.name}</p>
-                <p className="text-white/35 text-xs font-inter mt-0.5">{featured.location}</p>
-                <span className="inline-block mt-3 text-[10px] font-inter font-semibold uppercase tracking-[0.15em] text-gold/70 bg-gold/10 border border-gold/15 px-3 py-1 rounded-full">
-                  {featured.product}
-                </span>
-              </div>
-            </div>
-          </motion.div>
+      {/* Row 1 — scrolls left */}
+      <div className="group overflow-hidden mb-4">
+        <div
+          className="flex gap-4 animate-marquee group-hover:[animation-play-state:paused]"
+          style={{ animationDuration: "55s" }}
+        >
+          {row1.map((r, i) => <ReviewCard key={i} r={r} />)}
+        </div>
+      </div>
 
-          {/* Two smaller */}
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            className="lg:col-span-2 grid sm:grid-cols-2 gap-6"
-          >
-            {rest.map((r) => (
-              <motion.div
-                key={r.name}
-                variants={staggerItem}
-                className="bg-white rounded-2xl p-7 shadow-sm border border-black/5 flex flex-col"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex gap-0.5">
-                    {[...Array(r.rating)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-gold text-gold" />
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-1 text-text-secondary/50 text-[10px] font-inter">
-                    <CheckCircle2 className="w-3 h-3" />
-                    Verified
-                  </div>
-                </div>
-                <Quote className="w-5 h-5 text-gold/20 mb-3" />
-                <p className="text-text-secondary font-inter text-sm leading-relaxed flex-1 mb-5">
-                  {r.text}
-                </p>
-                <div className="border-t border-black/5 pt-5">
-                  <p className="font-inter font-semibold text-text-primary text-sm">{r.name}</p>
-                  <p className="text-text-secondary text-xs font-inter mt-0.5">{r.location}</p>
-                  <span className="inline-block mt-3 text-[10px] font-inter font-semibold uppercase tracking-[0.15em] text-gold/70 bg-gold/8 border border-gold/15 px-2.5 py-1 rounded-full">
-                    {r.product}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+      {/* Row 2 — scrolls right */}
+      <div className="group overflow-hidden">
+        <div
+          className="flex gap-4 animate-marquee-reverse group-hover:[animation-play-state:paused]"
+          style={{ animationDuration: "50s" }}
+        >
+          {row2.map((r, i) => <ReviewCard key={i} r={r} />)}
         </div>
       </div>
     </section>
@@ -489,6 +510,7 @@ export function BrandCTA() {
       <div className="relative z-10 max-w-xl mx-auto px-4 text-center">
         <motion.p
           {...viewFadeUp(0)}
+          viewport={{ once: false, margin: "-60px" }}
           className="text-[10px] font-inter font-bold tracking-[0.3em] uppercase text-gold mb-5"
         >
           Ready to smell expensive?
@@ -496,6 +518,7 @@ export function BrandCTA() {
 
         <motion.h2
           {...viewFadeUp(0.1)}
+          viewport={{ once: false, margin: "-60px" }}
           className="font-playfair text-white leading-[1.06] mb-5"
           style={{ fontSize: "clamp(2rem, 5vw, 3.6rem)" }}
         >
@@ -505,12 +528,13 @@ export function BrandCTA() {
 
         <motion.p
           {...viewFadeUp(0.2)}
+          viewport={{ once: false, margin: "-60px" }}
           className="text-white/40 font-inter text-sm leading-[1.8] mb-10 max-w-[400px] mx-auto"
         >
           Join 2,000+ South Africans who've made The Perfume Co Africa their signature. Premium scents from R299 — free delivery on 3 or more bottles.
         </motion.p>
 
-        <motion.div {...viewFadeUp(0.3)} className="flex flex-col sm:flex-row gap-3 justify-center">
+        <motion.div {...viewFadeUp(0.3)} viewport={{ once: false, margin: "-60px" }} className="flex flex-col sm:flex-row gap-3 justify-center">
           <a
             href="#collection"
             className="btn-gold-shimmer glow-pulse text-black font-inter font-bold text-base px-12 py-4 rounded-full tracking-wide"

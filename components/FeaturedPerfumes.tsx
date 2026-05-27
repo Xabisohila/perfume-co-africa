@@ -32,8 +32,8 @@ const products = [
     tagline: "Dark · Mysterious · Commanding",
     description:
       "Pure Arabian oud, smoked leather, and dark patchouli. Power in a bottle for those who leave a mark.",
-    price: 299,
-    originalPrice: 599,
+    price: 599,
+    originalPrice: undefined,
     rating: 4.8,
     reviews: 198,
     image: "/product.jpg",
@@ -64,8 +64,8 @@ const products = [
     tagline: "Bold · Floral · Timeless",
     description:
       "Rose, iris, and rich oud in perfect balance. A fragrance that carries the weight of pure elegance.",
-    price: 299,
-    originalPrice: 599,
+    price: 599,
+    originalPrice: undefined,
     rating: 4.7,
     reviews: 163,
     image: "/product.jpg",
@@ -82,7 +82,7 @@ function ProductCard({ p }: { p: (typeof products)[0] }) {
   const [hovered, setHovered] = useState(false);
   const { dispatch } = useCart();
 
-  const discount = Math.round((1 - p.price / p.originalPrice) * 100);
+  const discount = p.originalPrice ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
 
   const handleAdd = () => {
     for (let i = 0; i < qty; i++) {
@@ -125,9 +125,11 @@ function ProductCard({ p }: { p: (typeof products)[0] }) {
         </span>
 
         {/* Discount chip */}
-        <span className="absolute top-4 right-4 z-10 text-[11px] font-inter font-extrabold text-black bg-gold px-2.5 py-1 rounded-full">
-          −{discount}%
-        </span>
+        {discount > 0 && (
+          <span className="absolute top-4 right-4 z-10 text-[11px] font-inter font-extrabold text-black bg-gold px-2.5 py-1 rounded-full">
+            −{discount}%
+          </span>
+        )}
       </div>
 
       {/* ── Content ── */}
@@ -195,13 +197,20 @@ function ProductCard({ p }: { p: (typeof products)[0] }) {
         </div>
 
         {/* Price row */}
-        <div className="flex items-baseline gap-2 mb-4">
-          <span className="font-playfair text-[1.6rem] font-bold text-white">
+        <div className="flex items-center gap-2 mb-4 flex-wrap">
+          <span className="font-playfair text-[1.6rem] font-bold text-white leading-none">
             {fmt(p.price)}
           </span>
-          <span className="text-white/25 text-sm line-through font-inter">
-            {fmt(p.originalPrice)}
-          </span>
+          {p.originalPrice && (
+            <span className="text-white/25 text-sm line-through font-inter">
+              {fmt(p.originalPrice)}
+            </span>
+          )}
+          {!p.originalPrice && (
+            <span className="text-[10px] font-inter font-semibold uppercase tracking-[0.15em] text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-1 rounded-full">
+              Free Shipping
+            </span>
+          )}
         </div>
 
         {/* Qty + Add to Cart */}
