@@ -7,7 +7,6 @@ import LuxuryExperience from "@/components/LuxuryExperience";
 import Scarcity from "@/components/Scarcity";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 
 const BASE = "https://www.perfume-co.co.za";
@@ -277,7 +276,6 @@ export default function Home() {
         <Scarcity />
         <FAQ />
         <FinalCTA />
-        <FloatingWhatsApp />
         <StickyMobileCTA />
       </main>
     </>

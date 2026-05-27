@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import FeaturedPerfumes from "@/components/FeaturedPerfumes";
 import FAQ from "@/components/FAQ";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import { BrandHero, TickerStrip, TrustPillars, Reviews, BrandCTA } from "./Sections";
 
@@ -204,7 +203,6 @@ export default function ThePerfumeCoAfricaPage() {
         <Reviews />
         <FAQ />
         <BrandCTA />
-        <FloatingWhatsApp />
         <StickyMobileCTA />
       </main>
     </>
