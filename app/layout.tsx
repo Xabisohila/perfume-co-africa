@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     siteName: "The Perfume Co. Africa",
     images: [
       {
-        url: "/product.png",
+        url: "/product.jpg",
         width: 1200,
         height: 630,
         alt: "The Perfume Co. Africa — Luxury Fragrances South Africa",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "The Perfume Co. Africa | Luxury Fragrances South Africa",
     description: "Designer-inspired luxury fragrances from R299. Free delivery on 3+ bottles.",
-    images: ["/product.png"],
+    images: ["/product.jpg"],
   },
   robots: {
     index: true,

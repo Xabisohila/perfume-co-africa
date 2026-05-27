@@ -169,7 +169,7 @@ export default function Hero() {
                 }}
               >
                 <Image
-                  src="/product.png"
+                  src="/product 2.png"
                   alt="The Perfume Co. Africa — luxury fragrance bottles"
                   width={420}
                   height={520}

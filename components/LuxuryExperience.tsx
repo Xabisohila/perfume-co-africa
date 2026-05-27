@@ -35,7 +35,7 @@ export default function LuxuryExperience() {
           <motion.div {...viewSlideLeft(0)} className="relative">
             <div className="relative rounded-3xl overflow-hidden aspect-[3/4] shadow-2xl bg-white">
               <Image
-                src="/product.png"
+                src="/product.jpg"
                 alt="The Perfume Co. Africa — luxury fragrance bottles"
                 fill
                 className="object-contain p-8 transition-transform duration-700 hover:scale-105"
@@ -163,7 +163,7 @@ export default function LuxuryExperience() {
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_70%_at_50%_50%,rgba(200,169,107,0.08)_0%,transparent_70%)]" />
               <div className="relative w-full h-full min-h-[280px]">
                 <Image
-                  src="/product.png"
+                  src="/product 2.png"
                   alt="The Perfume Co. Africa luxury bottles"
                   fill
                   className="object-contain p-8 lg:p-10 hover:scale-105 transition-transform duration-700"
