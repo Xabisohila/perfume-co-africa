@@ -7,6 +7,26 @@ import { BrandHero, TickerStrip, TrustPillars, Reviews, BrandCTA } from "./Secti
 
 const BASE = "https://www.perfume-co.co.za";
 
+const shippingDetails = {
+  "@type": "OfferShippingDetails",
+  shippingRate: { "@type": "MonetaryAmount", value: "90", currency: "ZAR" },
+  shippingDestination: { "@type": "DefinedRegion", addressCountry: "ZA" },
+  deliveryTime: {
+    "@type": "ShippingDeliveryTime",
+    handlingTime: { "@type": "QuantitativeValue", minValue: 1, maxValue: 2, unitCode: "DAY" },
+    transitTime: { "@type": "QuantitativeValue", minValue: 2, maxValue: 5, unitCode: "DAY" },
+  },
+};
+
+const returnPolicy = {
+  "@type": "MerchantReturnPolicy",
+  applicableCountry: "ZA",
+  returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+  merchantReturnDays: 7,
+  returnMethod: "https://schema.org/ReturnByMail",
+  returnFees: "https://schema.org/FreeReturn",
+};
+
 export const metadata: Metadata = {
   title: "The Perfume Co Africa | Luxury Designer Fragrances South Africa",
   description:
@@ -95,6 +115,8 @@ const productSchemas = [
       availability: "https://schema.org/InStock",
       url: `${BASE}/the-perfume-co-africa#collection`,
       seller: { "@type": "Organization", name: "The Perfume Co Africa" },
+      shippingDetails,
+      hasMerchantReturnPolicy: returnPolicy,
     },
     aggregateRating: {
       "@type": "AggregateRating",
@@ -120,6 +142,8 @@ const productSchemas = [
       availability: "https://schema.org/InStock",
       url: `${BASE}/the-perfume-co-africa#collection`,
       seller: { "@type": "Organization", name: "The Perfume Co Africa" },
+      shippingDetails,
+      hasMerchantReturnPolicy: returnPolicy,
     },
     aggregateRating: {
       "@type": "AggregateRating",
@@ -145,6 +169,8 @@ const productSchemas = [
       availability: "https://schema.org/InStock",
       url: `${BASE}/the-perfume-co-africa#collection`,
       seller: { "@type": "Organization", name: "The Perfume Co Africa" },
+      shippingDetails,
+      hasMerchantReturnPolicy: returnPolicy,
     },
     aggregateRating: {
       "@type": "AggregateRating",
@@ -170,6 +196,8 @@ const productSchemas = [
       availability: "https://schema.org/InStock",
       url: `${BASE}/the-perfume-co-africa#collection`,
       seller: { "@type": "Organization", name: "The Perfume Co Africa" },
+      shippingDetails,
+      hasMerchantReturnPolicy: returnPolicy,
     },
     aggregateRating: {
       "@type": "AggregateRating",
