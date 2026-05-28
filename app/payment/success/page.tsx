@@ -1,6 +1,12 @@
-import { CheckCircle2, ShoppingBag } from "lucide-react";
+import { CheckCircle2, ShoppingBag, Package } from "lucide-react";
 
-export default function PaymentSuccessPage() {
+export default async function PaymentSuccessPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ order_id?: string }>;
+}) {
+  const { order_id } = await searchParams;
+
   return (
     <div className="min-h-screen bg-luxury flex flex-col items-center justify-center px-4 text-center">
       {/* Header */}
@@ -29,11 +35,20 @@ export default function PaymentSuccessPage() {
         <p className="text-text-secondary font-inter leading-relaxed mb-2">
           Thank you for your order. Your payment has been processed successfully.
         </p>
-        <p className="text-text-secondary font-inter text-sm mb-8">
+        <p className="text-text-secondary font-inter text-sm mb-6">
           You&apos;ll receive a confirmation email shortly. Your order will be dispatched within 1–2 business days.
         </p>
 
-        {/* Important note */}
+        {/* Order reference */}
+        {order_id && (
+          <div className="bg-gold/8 border border-gold/20 rounded-2xl p-4 mb-4 text-left">
+            <p className="font-inter text-xs text-text-secondary mb-1">Order Reference</p>
+            <p className="font-inter font-bold text-text-primary text-sm font-mono tracking-wider">{order_id}</p>
+            <p className="font-inter text-xs text-text-secondary mt-1">Save this — you&apos;ll need it to track your order.</p>
+          </div>
+        )}
+
+        {/* What happens next */}
         <div className="bg-gold/8 border border-gold/20 rounded-2xl p-5 mb-8 text-left">
           <p className="font-inter text-sm text-text-primary font-semibold mb-1">
             What happens next?
@@ -45,13 +60,24 @@ export default function PaymentSuccessPage() {
           </ul>
         </div>
 
-        <a
-          href="/"
-          className="inline-flex items-center gap-2 btn-gold-shimmer text-black font-inter font-bold px-10 py-3.5 rounded-full"
-        >
-          <ShoppingBag className="w-4 h-4" />
-          Continue Shopping
-        </a>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          {order_id && (
+            <a
+              href={`/orders/track?id=${order_id}`}
+              className="inline-flex items-center justify-center gap-2 border border-gold/30 text-text-primary font-inter font-semibold px-6 py-3.5 rounded-full hover:border-gold/60 transition-colors text-sm"
+            >
+              <Package className="w-4 h-4" />
+              Track Order
+            </a>
+          )}
+          <a
+            href="/"
+            className="inline-flex items-center justify-center gap-2 btn-gold-shimmer text-black font-inter font-bold px-10 py-3.5 rounded-full"
+          >
+            <ShoppingBag className="w-4 h-4" />
+            Continue Shopping
+          </a>
+        </div>
       </div>
     </div>
   );
