@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useMotionTemplate,
+} from "framer-motion";
 import Image from "next/image";
 import { Star, ShoppingBag, Check, Minus, Plus } from "lucide-react";
 import { stagger, staggerItem, viewFadeUp } from "@/lib/animations";
@@ -16,8 +23,7 @@ const products = [
     tagline: "Fresh · Spicy · Magnetic",
     description:
       "Gold dust and desire. Warm grapefruit, cinnamon, and leathery amber — the scent that turns heads and opens doors.",
-    price: 299,
-    originalPrice: 599,
+    sizes: [{ ml: 50, price: 299, originalPrice: 599 }],
     rating: 4.9,
     reviews: 312,
     image: "/product.jpg",
@@ -32,12 +38,11 @@ const products = [
     tagline: "Dark · Mysterious · Commanding",
     description:
       "Pure Arabian oud, smoked leather, and dark patchouli. Power in a bottle for those who leave a mark.",
-    price: 599,
-    originalPrice: undefined,
+    sizes: [{ ml: 50, price: 599, originalPrice: undefined }],
     rating: 4.8,
     reviews: 198,
     image: "/product.jpg",
-    badge: "Best for Him",
+    badge: "Best for Her",
     badgeStyle: "bg-gold/90 text-black",
     gender: "For Her",
     notes: ["Oud", "Leather", "Patchouli"],
@@ -48,8 +53,7 @@ const products = [
     tagline: "Warm · Vibrant · Effortless",
     description:
       "Orange blossom, peach, and sun-warmed woods. A radiant aura for those who live in full colour.",
-    price: 299,
-    originalPrice: 599,
+    sizes: [{ ml: 50, price: 299, originalPrice: 599 }],
     rating: 4.9,
     reviews: 247,
     image: "/product.jpg",
@@ -64,8 +68,7 @@ const products = [
     tagline: "Bold · Floral · Timeless",
     description:
       "Rose, iris, and rich oud in perfect balance. A fragrance that carries the weight of pure elegance.",
-    price: 599,
-    originalPrice: undefined,
+    sizes: [{ ml: 50, price: 599, originalPrice: undefined }],
     rating: 4.7,
     reviews: 163,
     image: "/product.jpg",
@@ -82,13 +85,45 @@ function ProductCard({ p }: { p: (typeof products)[0] }) {
   const [hovered, setHovered] = useState(false);
   const { dispatch } = useCart();
 
-  const discount = p.originalPrice ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
+  // 3D tilt — spring-smoothed rotation tracking cursor position
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), { stiffness: 400, damping: 30 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), { stiffness: 400, damping: 30 });
+
+  // Cursor spotlight — gold glow follows the pointer
+  const spotX = useMotionValue(50);
+  const spotY = useMotionValue(50);
+  const spotlight = useMotionTemplate`radial-gradient(180px circle at ${spotX}% ${spotY}%, rgba(200,169,107,0.14), transparent 70%)`;
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+    spotX.set(((e.clientX - rect.left) / rect.width) * 100);
+    spotY.set(((e.clientY - rect.top) / rect.height) * 100);
+  };
+
+  const resetTilt = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  const size = p.sizes[0]; // 50ml
+  const discount = size.originalPrice
+    ? Math.round((1 - size.price / size.originalPrice) * 100)
+    : 0;
 
   const handleAdd = () => {
     for (let i = 0; i < qty; i++) {
       dispatch({
         type: "ADD_ITEM",
-        payload: { id: String(p.id), name: p.name, price: p.price, image: p.image },
+        payload: {
+          id: `${p.id}-50ml`,
+          name: `${p.name} (50ml)`,
+          price: size.price,
+          image: p.image,
+        },
       });
     }
     setAdded(true);
@@ -99,20 +134,45 @@ function ProductCard({ p }: { p: (typeof products)[0] }) {
     <motion.div
       variants={staggerItem}
       onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      className="group relative bg-dark-card rounded-2xl overflow-hidden flex flex-col border border-gold/15 hover:border-gold/45 transition-all duration-500 hover:shadow-[0_12px_60px_rgba(200,169,107,0.13)]"
+      onHoverEnd={() => { setHovered(false); resetTilt(); }}
+      onMouseMove={handleMouseMove}
+      whileHover={{ y: -6 }}
+      style={{ rotateX, rotateY, transformPerspective: 900 }}
+      className="group relative bg-dark-card rounded-2xl overflow-hidden flex flex-col border border-gold/15 hover:border-gold/50 transition-colors duration-500 hover:shadow-[0_24px_80px_rgba(200,169,107,0.18)]"
     >
+      {/* Cursor-following gold spotlight */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-[2] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ background: spotlight }}
+      />
       {/* ── Image ── */}
-      <div className="relative h-72 overflow-hidden flex-shrink-0 bg-[#0d0d0d]">
+      <div className="relative h-80 overflow-hidden flex-shrink-0 bg-[#0d0d0d]">
         <Image
           src={p.image}
           alt={p.name}
           fill
-          className="object-contain transition-transform duration-700 group-hover:scale-105 p-5"
+          className="object-contain transition-transform duration-700 group-hover:scale-110 p-5"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
         {/* Bottom gradient fade into card */}
         <div className="absolute inset-0 bg-gradient-to-t from-dark-card via-transparent to-transparent" />
+        {/* Hover overlay */}
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              key="img-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="absolute inset-0 flex items-center justify-center bg-black/25"
+            >
+              <span className="text-[10px] font-inter font-semibold uppercase tracking-[0.28em] text-white/80 border border-white/25 px-4 py-2 rounded-full" style={{ backdropFilter: "blur(8px)", background: "rgba(0,0,0,0.3)" }}>
+                View Details
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Badge */}
         <span
@@ -124,21 +184,14 @@ function ProductCard({ p }: { p: (typeof products)[0] }) {
           {p.badge}
         </span>
 
-        {/* Discount chip */}
-        {discount > 0 && (
-          <span className="absolute top-4 right-4 z-10 text-[11px] font-inter font-extrabold text-black bg-gold px-2.5 py-1 rounded-full">
-            −{discount}%
-          </span>
-        )}
+        {/* Gender chip — top right */}
+        <span className="absolute top-4 right-4 z-10 text-[9px] font-inter font-bold tracking-[0.2em] uppercase text-white/60 bg-white/5 border border-white/10 px-2.5 py-1 rounded-full backdrop-blur-sm">
+          {p.gender}
+        </span>
       </div>
 
       {/* ── Content ── */}
       <div className="p-5 flex flex-col flex-1">
-        {/* Gender eyebrow */}
-        <p className="text-[9px] font-inter font-bold tracking-[0.25em] uppercase text-gold/55 mb-1.5">
-          {p.gender}
-        </p>
-
         {/* Name */}
         <h3 className="font-playfair text-[1.1rem] font-bold text-white leading-tight mb-1">
           {p.name}
@@ -196,18 +249,27 @@ function ProductCard({ p }: { p: (typeof products)[0] }) {
           </span>
         </div>
 
+        {/* Size label */}
+        <p className="text-[9px] font-inter font-bold tracking-[0.25em] uppercase text-white/30 mb-3">
+          50 ml
+        </p>
+
         {/* Price row */}
-        <div className="flex items-center gap-2 mb-4 flex-wrap">
-          <span className="font-playfair text-[1.6rem] font-bold text-white leading-none">
-            {fmt(p.price)}
+        <div className="flex items-end gap-2.5 mb-4 flex-wrap">
+          <span className="font-playfair text-[1.65rem] font-bold text-white leading-none tracking-tight">
+            {fmt(size.price)}
           </span>
-          {p.originalPrice && (
-            <span className="text-white/25 text-sm line-through font-inter">
-              {fmt(p.originalPrice)}
-            </span>
-          )}
-          {!p.originalPrice && (
-            <span className="text-[10px] font-inter font-semibold uppercase tracking-[0.15em] text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-1 rounded-full">
+          {size.originalPrice ? (
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className="text-white/25 text-sm line-through font-inter">{fmt(size.originalPrice)}</span>
+              {discount > 0 && (
+                <span className="text-[9px] font-inter font-bold text-gold/90 bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  Save {discount}%
+                </span>
+              )}
+            </div>
+          ) : (
+            <span className="text-[9px] font-inter font-semibold uppercase tracking-[0.15em] text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-1 rounded-full mb-0.5">
               Free Shipping
             </span>
           )}

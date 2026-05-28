@@ -38,8 +38,16 @@ export default function Hero() {
     <section className="relative min-h-screen bg-[#060606] overflow-hidden flex flex-col">
       {/* ── Background atmosphere ── */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#080808] to-[#0d0d0d]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_60%_40%,rgba(200,169,107,0.055)_0%,transparent_60%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_80%_at_5%_60%,rgba(200,169,107,0.03)_0%,transparent_55%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_60%_40%,rgba(200,169,107,0.09)_0%,transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_80%_at_5%_60%,rgba(200,169,107,0.05)_0%,transparent_55%)]" />
+      {/* Grain texture — adds luxury tactile depth */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.045]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: "128px",
+        }}
+      />
 
       {/* Decorative vertical rule lines */}
       <div className="absolute left-[8%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gold/8 to-transparent hidden xl:block" />
@@ -65,7 +73,10 @@ export default function Hero() {
             {/* Eyebrow badge */}
             <motion.div {...fadeUp(0.05)} className="mb-7 inline-flex">
               <span className="inline-flex items-center gap-2.5 bg-gold/8 border border-gold/25 text-gold text-[11px] font-inter font-bold tracking-[0.25em] uppercase px-5 py-2.5 rounded-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse flex-shrink-0" />
+                <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-gold" />
+                </span>
                 Limited Stock · Order Today
               </span>
             </motion.div>
@@ -194,16 +205,25 @@ export default function Hero() {
               transition={{ duration: 0.9, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
               className="absolute bottom-[10%] -left-2 lg:-left-8 z-20"
             >
-              <div className="glass-card-dark rounded-2xl px-4 py-3.5 max-w-[210px] shadow-2xl">
+              <div
+                className="rounded-2xl px-4 py-3.5 max-w-[210px]"
+                style={{
+                  background: "rgba(6,6,6,0.75)",
+                  backdropFilter: "blur(32px)",
+                  WebkitBackdropFilter: "blur(32px)",
+                  border: "1px solid rgba(200,169,107,0.22)",
+                  boxShadow: "0 24px 64px rgba(0,0,0,0.55), inset 0 1px 0 rgba(200,169,107,0.1)",
+                }}
+              >
                 <div className="flex gap-0.5 mb-1.5">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-3 h-3 fill-gold text-gold" />
                   ))}
                 </div>
-                <p className="text-white text-xs font-inter leading-snug">
+                <p className="text-white/90 text-xs font-inter leading-snug">
                   &ldquo;I got stopped 3 times asking what I&apos;m wearing!&rdquo;
                 </p>
-                <p className="text-gold/65 text-[10px] mt-2 font-inter font-medium">— Amara K., Lagos</p>
+                <p className="text-gold/70 text-[10px] mt-2 font-inter font-medium tracking-wide">— Amara K., Lagos</p>
               </div>
             </motion.div>
 
@@ -214,9 +234,18 @@ export default function Hero() {
               transition={{ duration: 0.9, delay: 1.3, ease: [0.22, 1, 0.36, 1] }}
               className="absolute top-[14%] -right-1 lg:right-2 z-20"
             >
-              <div className="glass-card-dark rounded-2xl px-4 py-3 shadow-2xl">
+              <div
+                className="rounded-2xl px-4 py-3"
+                style={{
+                  background: "rgba(6,6,6,0.75)",
+                  backdropFilter: "blur(32px)",
+                  WebkitBackdropFilter: "blur(32px)",
+                  border: "1px solid rgba(200,169,107,0.22)",
+                  boxShadow: "0 24px 64px rgba(0,0,0,0.55), inset 0 1px 0 rgba(200,169,107,0.1)",
+                }}
+              >
                 <p className="text-gold text-xs font-inter font-bold tracking-wide">🏆 Best Seller</p>
-                <p className="text-white/55 text-[10px] font-inter mt-0.5">2,000+ bottles sold</p>
+                <p className="text-white/55 text-[10px] font-inter mt-0.5 tracking-wide">2,000+ bottles sold</p>
               </div>
             </motion.div>
           </div>
@@ -224,7 +253,13 @@ export default function Hero() {
       </div>
 
       {/* ── Bottom ticker marquee ── */}
-      <div className="relative z-10 border-t border-white/6 py-4 overflow-hidden bg-black/20 backdrop-blur-sm mt-auto">
+      <div
+        className="relative z-10 border-t border-white/6 py-4 overflow-hidden bg-black/20 backdrop-blur-sm mt-auto"
+        style={{
+          maskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+        }}
+      >
         <div className="flex gap-0 w-max animate-ticker whitespace-nowrap">
           {[...tickerItems, ...tickerItems].map((item, i) => (
             <span
