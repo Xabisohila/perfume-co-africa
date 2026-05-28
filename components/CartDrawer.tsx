@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { X, Minus, Plus, Trash2, ShoppingBag, MapPin, ArrowLeft } from "lucide-react";
+import { X, Minus, Plus, Trash2, ShoppingBag, MapPin, Mail, Package, ArrowLeft } from "lucide-react";
 import { useCart } from "@/lib/cartContext";
 import { fmt } from "@/lib/utils";
 
@@ -16,11 +16,13 @@ export default function CartDrawer() {
 
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [address, setAddress] = useState("");
+  const [email, setEmail] = useState("");
 
   const close = () => {
     dispatch({ type: "CLOSE" });
     setShowAddressForm(false);
     setAddress("");
+    setEmail("");
   };
 
   const hasFreeShippingItem = items.some((i) => i.price >= 599);
@@ -43,10 +45,13 @@ export default function CartDrawer() {
       "",
       `Shipping address:`,
       address.trim(),
+      "",
+      `Email for tracking: ${email.trim()}`,
     ].join("\n");
     window.open(`https://wa.me/27640713844?text=${encodeURIComponent(msg)}`, "_blank");
     setShowAddressForm(false);
     setAddress("");
+    setEmail("");
   };
 
   return (
@@ -231,11 +236,30 @@ export default function CartDrawer() {
                         className="w-full bg-white/[0.06] border border-white/10 focus:border-gold/50 rounded-xl px-4 py-3 text-white font-inter text-sm placeholder:text-white/20 resize-none outline-none transition-colors duration-200"
                       />
 
+                      <div>
+                        <div className="flex items-center gap-2 mb-2">
+                          <Mail className="w-4 h-4 text-gold" />
+                          <p className="font-inter text-white font-semibold text-sm">
+                            Email for order tracking
+                          </p>
+                        </div>
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="jane@example.com"
+                          className="w-full bg-white/[0.06] border border-white/10 focus:border-gold/50 rounded-xl px-4 py-3 text-white font-inter text-sm placeholder:text-white/20 outline-none transition-colors duration-200"
+                        />
+                        <p className="text-white/25 font-inter text-xs mt-1.5">
+                          We&apos;ll send your tracking link here once your order is placed.
+                        </p>
+                      </div>
+
                       <motion.button
                         onClick={sendWhatsApp}
-                        disabled={!address.trim()}
-                        whileHover={address.trim() ? { scale: 1.02, y: -1 } : {}}
-                        whileTap={address.trim() ? { scale: 0.97 } : {}}
+                        disabled={!address.trim() || !email.trim().includes("@")}
+                        whileHover={address.trim() && email.trim().includes("@") ? { scale: 1.02, y: -1 } : {}}
+                        whileTap={address.trim() && email.trim().includes("@") ? { scale: 0.97 } : {}}
                         className="w-full bg-[#25D366] hover:bg-[#20bc5a] disabled:opacity-40 disabled:cursor-not-allowed text-white font-inter font-bold text-base py-4 rounded-2xl flex items-center justify-center gap-2.5 transition-colors duration-200"
                       >
                         <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -350,6 +374,17 @@ export default function CartDrawer() {
                       >
                         Clear cart
                       </button>
+
+                      <div className="h-px bg-white/8" />
+
+                      <a
+                        href="/orders/track"
+                        onClick={close}
+                        className="w-full flex items-center justify-center gap-2 text-white/30 hover:text-white/60 font-inter text-xs text-center transition-colors py-0.5"
+                      >
+                        <Package className="w-3.5 h-3.5" />
+                        Track an existing order
+                      </a>
                     </motion.div>
                   )}
                 </AnimatePresence>

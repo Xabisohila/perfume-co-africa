@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ShoppingBag } from "lucide-react";
+import { Menu, X, ShoppingBag, Package } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/lib/cartContext";
 
@@ -89,6 +89,13 @@ export default function Navbar() {
 
             {/* Desktop CTA */}
             <div className="hidden md:flex items-center gap-3">
+              <a
+                href="/orders/track"
+                className="flex items-center gap-1.5 text-white/50 hover:text-gold font-inter text-sm tracking-wide transition-colors duration-300 group py-1 border border-white/10 hover:border-gold/30 px-3.5 rounded-full"
+              >
+                <Package className="w-3.5 h-3.5" />
+                Track Order
+              </a>
               <button
                 onClick={openCart}
                 className="relative text-white/60 hover:text-gold transition-colors duration-300 p-1"
@@ -183,6 +190,17 @@ export default function Navbar() {
                     {link.label}
                   </motion.a>
                 ))}
+                <motion.a
+                  href="/orders/track"
+                  onClick={() => setMenuOpen(false)}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: navLinks.length * 0.06, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex items-center gap-2 text-gold/80 hover:text-gold text-lg font-inter tracking-wide border-b border-white/8 py-4 transition-colors duration-200"
+                >
+                  <Package className="w-5 h-5" />
+                  Track Order
+                </motion.a>
                 <motion.a
                   href="#collection"
                   onClick={() => setMenuOpen(false)}
