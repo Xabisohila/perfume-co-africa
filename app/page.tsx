@@ -11,6 +11,15 @@ import StickyMobileCTA from "@/components/StickyMobileCTA";
 
 const BASE = "https://www.perfume-co.co.za";
 
+const returnPolicy = {
+  "@type": "MerchantReturnPolicy",
+  applicableCountry: "ZA",
+  returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+  merchantReturnDays: 7,
+  returnMethod: "https://schema.org/ReturnByMail",
+  returnFees: "https://schema.org/FreeReturn",
+};
+
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -68,6 +77,7 @@ const productListSchema = {
           availability: "https://schema.org/InStock",
           url: `${BASE}/#collection`,
           seller: { "@type": "Organization", name: "The Perfume Co. Africa" },
+          hasMerchantReturnPolicy: returnPolicy,
           shippingDetails: {
             "@type": "OfferShippingDetails",
             shippingRate: { "@type": "MonetaryAmount", value: "90", currency: "ZAR" },
@@ -106,6 +116,7 @@ const productListSchema = {
           availability: "https://schema.org/InStock",
           url: `${BASE}/#collection`,
           seller: { "@type": "Organization", name: "The Perfume Co. Africa" },
+          hasMerchantReturnPolicy: returnPolicy,
           shippingDetails: {
             "@type": "OfferShippingDetails",
             shippingRate: { "@type": "MonetaryAmount", value: "90", currency: "ZAR" },
@@ -144,6 +155,7 @@ const productListSchema = {
           availability: "https://schema.org/InStock",
           url: `${BASE}/#collection`,
           seller: { "@type": "Organization", name: "The Perfume Co. Africa" },
+          hasMerchantReturnPolicy: returnPolicy,
           shippingDetails: {
             "@type": "OfferShippingDetails",
             shippingRate: { "@type": "MonetaryAmount", value: "90", currency: "ZAR" },
@@ -182,6 +194,7 @@ const productListSchema = {
           availability: "https://schema.org/InStock",
           url: `${BASE}/#collection`,
           seller: { "@type": "Organization", name: "The Perfume Co. Africa" },
+          hasMerchantReturnPolicy: returnPolicy,
           shippingDetails: {
             "@type": "OfferShippingDetails",
             shippingRate: { "@type": "MonetaryAmount", value: "90", currency: "ZAR" },
