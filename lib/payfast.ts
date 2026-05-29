@@ -17,9 +17,12 @@ function getValidateUrl() {
   return isSandbox() ? SANDBOX_VALIDATE_URL : LIVE_VALIDATE_URL;
 }
 
-// PayFast encodes spaces as '+' (PHP http_build_query style)
+// Match PHP urlencode() exactly — encodes spaces as '+' and also encodes
+// ! ' ( ) * ~ which encodeURIComponent leaves unencoded.
 function pfEncode(val: string): string {
-  return encodeURIComponent(val.trim()).replace(/%20/g, "+");
+  return encodeURIComponent(val.trim())
+    .replace(/%20/g, "+")
+    .replace(/[!'()*~]/g, (c) => "%" + c.charCodeAt(0).toString(16).toUpperCase());
 }
 
 /**
