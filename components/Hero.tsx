@@ -1,9 +1,54 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import Image from "next/image";
 import { ShieldCheck, Truck, Sparkles, Star } from "lucide-react";
 import { fadeUp } from "@/lib/animations";
+
+/** Slides each word up from below — premium reveal effect */
+function AnimatedLine({ children, delay = 0, className }: { children: string; delay?: number; className?: string }) {
+  const words = children.split(" ");
+  return (
+    <span className={className}>
+      {words.map((word, i) => (
+        <span key={i} className="inline-block overflow-hidden" style={{ lineHeight: 1.15 }}>
+          <motion.span
+            className="inline-block"
+            initial={{ y: "110%" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.78, delay: delay + i * 0.13, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {word}
+          </motion.span>
+          {i < words.length - 1 && " "}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/** Magnetically draws the child element toward the cursor on hover */
+function MagneticWrap({ children, strength = 0.28 }: { children: React.ReactNode; strength?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const sx = useSpring(x, { stiffness: 180, damping: 16 });
+  const sy = useSpring(y, { stiffness: 180, damping: 16 });
+
+  const onMove = (e: React.MouseEvent) => {
+    const r = ref.current!.getBoundingClientRect();
+    x.set((e.clientX - (r.left + r.width / 2)) * strength);
+    y.set((e.clientY - (r.top + r.height / 2)) * strength);
+  };
+  const onLeave = () => { x.set(0); y.set(0); };
+
+  return (
+    <motion.div ref={ref} style={{ x: sx, y: sy }} onMouseMove={onMove} onMouseLeave={onLeave}>
+      {children}
+    </motion.div>
+  );
+}
 
 type Particle = { size: number; top: string; left?: string; right?: string; delay: number };
 const particles: Particle[] = [
@@ -34,8 +79,12 @@ const trustBadges = [
 ];
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const productY = useTransform(scrollYProgress, [0, 1], ["0%", "-18%"]);
+
   return (
-    <section className="relative min-h-screen bg-[#060606] overflow-hidden flex flex-col">
+    <section ref={sectionRef} className="relative min-h-screen bg-[#060606] overflow-hidden flex flex-col">
       {/* ── Background atmosphere ── */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#080808] to-[#0d0d0d]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_60%_40%,rgba(200,169,107,0.09)_0%,transparent_60%)]" />
@@ -82,18 +131,23 @@ export default function Hero() {
             </motion.div>
 
             {/* Headline */}
-            <motion.h1
-              {...fadeUp(0.18)}
+            <h1
               className="font-playfair text-white leading-[1.08] mb-7"
               style={{ fontSize: "clamp(2.6rem, 5.5vw, 4.4rem)" }}
             >
-              <span className="block font-inter text-white/35 tracking-[0.35em] uppercase font-medium mb-4" style={{ fontSize: "0.7rem" }}>
+              <motion.span
+                {...fadeUp(0.05)}
+                className="block font-inter text-white/35 tracking-[0.35em] uppercase font-medium mb-4"
+                style={{ fontSize: "0.7rem" }}
+              >
                 Luxury Fragrances · South Africa
-              </span>
-              Smell Expensive.
+              </motion.span>
+              <AnimatedLine delay={0.2}>Smell Expensive.</AnimatedLine>
               <br />
-              <em className="not-italic text-gold-gradient">Be Unforgettable.</em>
-            </motion.h1>
+              <AnimatedLine delay={0.38} className="not-italic text-gold-gradient">
+                Be Unforgettable.
+              </AnimatedLine>
+            </h1>
 
             {/* Subheadline */}
             <motion.p
@@ -123,14 +177,16 @@ export default function Hero() {
 
             {/* CTA pair */}
             <motion.div {...fadeUp(0.54)} className="flex flex-col sm:flex-row gap-3.5 mb-10">
-              <motion.a
-                href="#collection"
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="btn-gold-shimmer glow-pulse text-black font-inter font-bold text-base px-10 py-4 rounded-full text-center tracking-wide"
-              >
-                Shop Now →
-              </motion.a>
+              <MagneticWrap>
+                <motion.a
+                  href="#collection"
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="btn-gold-shimmer glow-pulse text-black font-inter font-bold text-base px-10 py-4 rounded-full text-center tracking-wide block"
+                >
+                  Shop Now →
+                </motion.a>
+              </MagneticWrap>
               <motion.a
                 href="#why-us"
                 whileHover={{ scale: 1.02 }}
@@ -167,12 +223,13 @@ export default function Hero() {
             />
             <div className="absolute w-[280px] h-[280px] lg:w-[380px] lg:h-[380px] border border-gold/5 rounded-full float-animation" />
 
-            {/* Product bottle */}
+            {/* Product bottle — entrance + scroll parallax */}
+            <motion.div style={{ y: productY }} className="relative z-10">
             <motion.div
               initial={{ opacity: 0, scale: 0.88, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 1.3, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-              className="relative z-10 float-animation"
+              className="float-animation"
             >
               <div className="relative rounded-3xl overflow-hidden"
                 style={{
@@ -196,6 +253,7 @@ export default function Hero() {
                 />
                 <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#060606]/80 to-transparent" />
               </div>
+            </motion.div>
             </motion.div>
 
             {/* Floating review card — bottom left */}

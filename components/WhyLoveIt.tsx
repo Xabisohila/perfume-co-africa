@@ -1,9 +1,32 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { motion, useInView, animate } from "framer-motion";
 import { Clock, Crown, Banknote, MessageCircleHeart, Droplets } from "lucide-react";
 import { stagger, staggerItem, viewFadeUp } from "@/lib/animations";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+
+function CountUp({ to, suffix = "", decimals = 0, locale = false }: {
+  to: number; suffix?: string; decimals?: number; locale?: boolean;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+  useEffect(() => {
+    if (!inView || !ref.current) return;
+    const el = ref.current;
+    const controls = animate(0, to, {
+      duration: 2,
+      ease: "easeOut",
+      onUpdate: (v) => {
+        el.textContent =
+          (decimals > 0 ? v.toFixed(decimals) : locale ? Math.round(v).toLocaleString() : String(Math.round(v))) +
+          suffix;
+      },
+    });
+    return () => controls.stop();
+  }, [inView, to, suffix, decimals, locale]);
+  return <span ref={ref}>0{suffix}</span>;
+}
 
 const features = [
   {
@@ -91,10 +114,16 @@ export default function WhyLoveIt() {
                   {f.number}
                 </span>
 
-                {/* Icon */}
-                <div className="relative z-10 w-11 h-11 bg-[#0a0a0a] rounded-2xl flex items-center justify-center mb-5 group-hover:bg-gold transition-colors duration-400">
+                {/* Icon — spring bounce on scroll */}
+                <motion.div
+                  initial={{ scale: 0.3, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 380, damping: 18, delay: 0.15 + i * 0.08 }}
+                  className="relative z-10 w-11 h-11 bg-[#0a0a0a] rounded-2xl flex items-center justify-center mb-5 group-hover:bg-gold transition-colors duration-400"
+                >
                   <Icon className="w-5 h-5 text-gold group-hover:text-black transition-colors duration-400" />
-                </div>
+                </motion.div>
 
                 <h3 className="relative z-10 font-playfair text-text-primary text-xl font-semibold mb-3 leading-tight">
                   {f.title}
@@ -120,14 +149,18 @@ export default function WhyLoveIt() {
           className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-px bg-black/5 rounded-2xl overflow-hidden"
         >
           {[
-            { value: "2,000+", label: "Happy Customers" },
-            { value: "4.9★", label: "Average Rating" },
-            { value: "8–12h", label: "Scent Longevity" },
-            { value: "100%", label: "Satisfaction Rate" },
+            { label: "Happy Customers", countTo: 2000, suffix: "+", locale: true },
+            { label: "Average Rating",  countTo: 4.9,  suffix: "★", decimals: 1 },
+            { label: "Scent Longevity", static: "8–12h" },
+            { label: "Satisfaction Rate", countTo: 100, suffix: "%" },
           ].map((stat) => (
             <div key={stat.label} className="bg-white px-6 py-6 text-center">
               <p className="font-playfair text-2xl lg:text-3xl font-bold text-text-primary mb-1">
-                {stat.value}
+                {"countTo" in stat ? (
+                  <CountUp to={stat.countTo!} suffix={stat.suffix} decimals={stat.decimals} locale={stat.locale} />
+                ) : (
+                  stat.static
+                )}
               </p>
               <p className="text-text-secondary font-inter text-xs tracking-widest uppercase">
                 {stat.label}

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash2, Copy, Check, ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { Plus, Trash2, Copy, Check, ExternalLink, LayoutList } from "lucide-react";
 import { fmt } from "@/lib/utils";
 
 const PRODUCTS = [
@@ -92,9 +93,18 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-luxury py-10 px-4">
       <div className="max-w-xl mx-auto">
-        <div className="mb-8">
-          <p className="font-inter text-xs text-text-secondary uppercase tracking-widest mb-1">Admin</p>
-          <h1 className="font-playfair text-text-primary text-3xl font-bold">New WhatsApp Order</h1>
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div>
+            <p className="font-inter text-xs text-text-secondary uppercase tracking-widest mb-1">Admin</p>
+            <h1 className="font-playfair text-text-primary text-3xl font-bold">New WhatsApp Order</h1>
+          </div>
+          <Link
+            href="/admin/orders"
+            className="flex items-center gap-2 border border-black/12 rounded-xl px-4 py-2.5 font-inter text-sm text-text-secondary hover:text-text-primary hover:border-black/25 bg-white transition-all whitespace-nowrap"
+          >
+            <LayoutList className="w-4 h-4" />
+            View Orders
+          </Link>
         </div>
 
         {result && (

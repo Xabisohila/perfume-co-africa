@@ -2,10 +2,13 @@
 
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { Search, Package, CheckCircle2, XCircle, Clock, ShoppingBag } from "lucide-react";
+import { Search, Package, CheckCircle2, XCircle, Clock, ShoppingBag, Truck, MapPin, Star } from "lucide-react";
 import { fmt } from "@/lib/utils";
 
-type OrderStatus = "pending_payment" | "paid" | "failed" | "cancelled";
+type OrderStatus =
+  | "pending_payment" | "paid" | "order_confirmed"
+  | "processing" | "in_transit" | "delivered"
+  | "failed" | "cancelled";
 
 type TrackedOrder = {
   id: string;
@@ -18,28 +21,114 @@ type TrackedOrder = {
   items: Array<{ id: string; name: string; price: number; quantity: number; image: string }>;
 };
 
-const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string; icon: React.ReactNode }> = {
+const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string; icon: React.ReactNode; message: string }> = {
   pending_payment: {
     label: "Awaiting Payment",
     color: "text-amber-600 bg-amber-50 border-amber-200",
     icon: <Clock className="w-4 h-4" />,
+    message: "We're waiting for your payment to be confirmed. If you've already paid, it may take a few minutes.",
   },
   paid: {
-    label: "Order Confirmed",
-    color: "text-green-600 bg-green-50 border-green-200",
+    label: "Payment Received",
+    color: "text-emerald-600 bg-emerald-50 border-emerald-200",
     icon: <CheckCircle2 className="w-4 h-4" />,
+    message: "Your payment was received. We're reviewing your order now.",
+  },
+  order_confirmed: {
+    label: "Order Confirmed",
+    color: "text-blue-600 bg-blue-50 border-blue-200",
+    icon: <CheckCircle2 className="w-4 h-4" />,
+    message: "Your order is confirmed! We're getting it ready to pack.",
+  },
+  processing: {
+    label: "Processing",
+    color: "text-purple-600 bg-purple-50 border-purple-200",
+    icon: <Package className="w-4 h-4" />,
+    message: "Your fragrance is being carefully packed and prepared for shipment.",
+  },
+  in_transit: {
+    label: "In Transit",
+    color: "text-indigo-600 bg-indigo-50 border-indigo-200",
+    icon: <Truck className="w-4 h-4" />,
+    message: "Your order is on its way! You'll receive a WhatsApp message with your courier tracking number.",
+  },
+  delivered: {
+    label: "Delivered",
+    color: "text-teal-600 bg-teal-50 border-teal-200",
+    icon: <Star className="w-4 h-4" />,
+    message: "Your order has been delivered. Enjoy your new fragrance! We'd love to hear what you think.",
   },
   failed: {
     label: "Payment Failed",
     color: "text-red-600 bg-red-50 border-red-200",
     icon: <XCircle className="w-4 h-4" />,
+    message: "Your payment could not be processed. Please try again or contact us on WhatsApp.",
   },
   cancelled: {
     label: "Cancelled",
     color: "text-gray-500 bg-gray-50 border-gray-200",
     icon: <XCircle className="w-4 h-4" />,
+    message: "This order has been cancelled. Contact us on WhatsApp if you think this is a mistake.",
   },
 };
+
+/* Fulfillment progress steps (shown for active orders) */
+const PROGRESS_STEPS: { status: OrderStatus; label: string; Icon: React.ElementType }[] = [
+  { status: "order_confirmed", label: "Confirmed",  Icon: CheckCircle2 },
+  { status: "processing",      label: "Processing", Icon: Package },
+  { status: "in_transit",      label: "In Transit", Icon: Truck },
+  { status: "delivered",       label: "Delivered",  Icon: MapPin },
+];
+
+const STEP_ORDER: OrderStatus[] = [
+  "pending_payment", "paid", "order_confirmed", "processing", "in_transit", "delivered",
+];
+
+function FulfillmentProgress({ status }: { status: OrderStatus }) {
+  const currentIdx = STEP_ORDER.indexOf(status);
+  if (currentIdx < 1 || status === "failed" || status === "cancelled") return null;
+
+  return (
+    <div className="mt-5 pt-5 border-t border-black/6">
+      <p className="font-inter text-xs font-semibold text-text-secondary uppercase tracking-widest mb-4">
+        Order Progress
+      </p>
+      <div className="flex items-center gap-0">
+        {PROGRESS_STEPS.map((step, i) => {
+          const stepIdx = STEP_ORDER.indexOf(step.status);
+          const done    = currentIdx >= stepIdx;
+          const active  = status === step.status;
+          const Icon    = step.Icon;
+          const isLast  = i === PROGRESS_STEPS.length - 1;
+
+          return (
+            <div key={step.status} className="flex items-center flex-1 min-w-0">
+              <div className="flex flex-col items-center flex-shrink-0">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all ${
+                  active  ? "bg-gold border-gold text-black" :
+                  done    ? "bg-emerald-500 border-emerald-500 text-white" :
+                            "bg-white border-black/15 text-black/20"
+                }`}>
+                  <Icon className="w-3.5 h-3.5" />
+                </div>
+                <span className={`text-[10px] font-inter mt-1.5 leading-none text-center ${
+                  active ? "text-gold font-bold" : done ? "text-emerald-600 font-semibold" : "text-text-secondary/50"
+                }`}>
+                  {step.label}
+                </span>
+              </div>
+              {!isLast && (
+                <div className={`h-0.5 flex-1 mx-1 mb-4 rounded-full ${
+                  currentIdx > stepIdx ? "bg-emerald-400" : "bg-black/8"
+                }`} />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function TrackForm() {
   const searchParams = useSearchParams();
@@ -186,13 +275,13 @@ function TrackForm() {
             </div>
           </div>
 
-          {order.status === "paid" && (
-            <div className="mt-5 pt-4 border-t border-black/6">
-              <p className="font-inter text-text-secondary text-xs leading-relaxed">
-                Your order is confirmed. Expect a WhatsApp message with your courier tracking number within 1–2 business days.
-              </p>
-            </div>
-          )}
+          <div className="mt-5 pt-4 border-t border-black/6">
+            <p className="font-inter text-text-secondary text-xs leading-relaxed">
+              {STATUS_CONFIG[order.status].message}
+            </p>
+          </div>
+
+          <FulfillmentProgress status={order.status} />
         </div>
       )}
     </div>

@@ -1,5 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createOrder, type OrderItem } from "@/lib/db";
+import { createOrder, getAllOrders, updateOrderStatus, type OrderItem, type OrderStatus } from "@/lib/db";
+
+export async function GET(req: NextRequest) {
+  const auth = req.headers.get("authorization");
+  const password = auth?.replace("Bearer ", "");
+  if (password !== process.env.ADMIN_PASSWORD) {
+    return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
+  }
+  const orders = await getAllOrders();
+  return NextResponse.json({ orders });
+}
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const { password, orderId, status } = (await req.json()) as {
+      password: string;
+      orderId: string;
+      status: OrderStatus;
+    };
+    if (password !== process.env.ADMIN_PASSWORD) {
+      return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
+    }
+    const allowed: OrderStatus[] = [
+      "pending_payment", "paid", "order_confirmed",
+      "processing", "in_transit", "delivered",
+      "failed", "cancelled",
+    ];
+    if (!allowed.includes(status)) {
+      return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+    }
+    await updateOrderStatus(orderId, status);
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("[admin/orders PATCH]", err);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {

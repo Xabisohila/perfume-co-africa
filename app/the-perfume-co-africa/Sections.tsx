@@ -374,7 +374,14 @@ function GoogleG() {
 
 function ReviewCard({ r }: { r: (typeof reviews)[0] }) {
   return (
-    <div className="w-[300px] flex-shrink-0 bg-white rounded-2xl p-6 border border-black/6 shadow-sm flex flex-col select-none">
+    <div
+      className="w-[300px] flex-shrink-0 rounded-2xl p-6 border border-gold/15 flex flex-col select-none"
+      style={{
+        background: "rgba(255,255,255,0.04)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+      }}
+    >
       <div className="flex items-center justify-between mb-3">
         <div className="flex gap-0.5">
           {[...Array(r.rating)].map((_, i) => (
@@ -383,17 +390,17 @@ function ReviewCard({ r }: { r: (typeof reviews)[0] }) {
         </div>
         <div className="flex items-center gap-1.5">
           <GoogleG />
-          <span className="text-[10px] font-inter text-text-secondary/60">Google</span>
+          <span className="text-[10px] font-inter text-white/40">Google</span>
         </div>
       </div>
-      <Quote className="w-5 h-5 text-gold/20 mb-2" />
-      <p className="text-text-secondary font-inter text-sm leading-relaxed flex-1 mb-5">
+      <Quote className="w-5 h-5 text-gold/25 mb-2" />
+      <p className="text-white/60 font-inter text-sm leading-relaxed flex-1 mb-5">
         {r.text}
       </p>
-      <div className="flex items-end justify-between border-t border-black/5 pt-4">
+      <div className="flex items-end justify-between border-t border-white/8 pt-4">
         <div>
-          <p className="font-inter font-semibold text-text-primary text-sm leading-none mb-0.5">{r.name}</p>
-          <p className="text-text-secondary text-xs font-inter">{r.location}</p>
+          <p className="font-inter font-semibold text-white text-sm leading-none mb-0.5">{r.name}</p>
+          <p className="text-white/35 text-xs font-inter">{r.location}</p>
         </div>
         <span className="text-[9px] font-inter font-semibold uppercase tracking-[0.12em] text-gold/70 bg-gold/8 border border-gold/15 px-2 py-1 rounded-full whitespace-nowrap ml-3">
           {r.product}
@@ -410,9 +417,14 @@ export function Reviews() {
   const row2 = [...[...reviews].reverse(), ...[...reviews].reverse()];
 
   return (
-    <section id="reviews" className="bg-luxury py-20 lg:py-28 overflow-hidden">
+    <section id="reviews" className="relative bg-[#060606] py-20 lg:py-28 overflow-hidden">
+      {/* Subtle gold radial glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_50%,rgba(200,169,107,0.06)_0%,transparent_65%)] pointer-events-none" />
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+
       {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <motion.div
           {...viewFadeUp(0)}
           viewport={{ once: false, margin: "-60px" }}
@@ -423,7 +435,7 @@ export function Reviews() {
               Real Customers
             </p>
             <h2
-              className="font-playfair text-text-primary leading-[1.1]"
+              className="font-playfair text-white leading-[1.1]"
               style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)" }}
             >
               Why Customers Love{" "}
@@ -434,20 +446,27 @@ export function Reviews() {
           {/* Badges row */}
           <div className="flex items-center gap-3 flex-wrap">
             {/* Google badge */}
-            <div className="flex items-center gap-3 bg-white rounded-2xl px-5 py-3.5 shadow-sm border border-black/5">
+            <div
+              className="flex items-center gap-3 rounded-2xl px-5 py-3.5 border border-gold/20"
+              style={{
+                background: "rgba(255,255,255,0.05)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+              }}
+            >
               <GoogleG />
               <div>
-                <p className="font-inter font-bold text-text-primary text-xs leading-none mb-1">Google Reviews</p>
+                <p className="font-inter font-bold text-white text-xs leading-none mb-1">Google Reviews</p>
                 <div className="flex gap-0.5">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-3 h-3 fill-gold text-gold" />
                   ))}
                 </div>
               </div>
-              <div className="h-8 w-px bg-black/8" />
+              <div className="h-8 w-px bg-white/10" />
               <div>
-                <p className="font-playfair text-text-primary font-bold text-xl leading-none">4.9</p>
-                <p className="text-text-secondary text-[10px] font-inter mt-0.5">900+ reviews</p>
+                <p className="font-playfair text-white font-bold text-xl leading-none">4.9</p>
+                <p className="text-white/40 text-[10px] font-inter mt-0.5">900+ reviews</p>
               </div>
             </div>
           </div>
@@ -455,7 +474,7 @@ export function Reviews() {
       </div>
 
       {/* Row 1 — scrolls left */}
-      <div className="group overflow-hidden mb-4">
+      <div className="relative group overflow-hidden mb-4">
         <div
           className="flex gap-4 animate-marquee group-hover:[animation-play-state:paused]"
           style={{ animationDuration: "55s" }}
@@ -465,7 +484,7 @@ export function Reviews() {
       </div>
 
       {/* Row 2 — scrolls right */}
-      <div className="group overflow-hidden">
+      <div className="relative group overflow-hidden">
         <div
           className="flex gap-4 animate-marquee-reverse group-hover:[animation-play-state:paused]"
           style={{ animationDuration: "50s" }}

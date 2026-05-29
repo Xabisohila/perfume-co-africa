@@ -1,6 +1,14 @@
 import { createClient, type Client, type Row } from "@libsql/client";
 
-export type OrderStatus = "pending_payment" | "paid" | "failed" | "cancelled";
+export type OrderStatus =
+  | "pending_payment"
+  | "paid"
+  | "order_confirmed"
+  | "processing"
+  | "in_transit"
+  | "delivered"
+  | "failed"
+  | "cancelled";
 
 export type OrderItem = {
   id: string;
@@ -147,6 +155,14 @@ export async function updateOrderStatus(
     `,
     args: [status, new Date().toISOString(), pfPaymentId ?? null, id],
   });
+}
+
+export async function getAllOrders(): Promise<Order[]> {
+  const client = await ensureReady();
+  const result = await client.execute(
+    "SELECT * FROM orders ORDER BY createdAt DESC"
+  );
+  return result.rows.map(rowToOrder);
 }
 
 export async function isAlreadyProcessed(id: string): Promise<boolean> {
