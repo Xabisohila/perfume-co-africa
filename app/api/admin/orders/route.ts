@@ -2,13 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { createOrder, getAllOrders, updateOrderStatus, type OrderItem, type OrderStatus } from "@/lib/db";
 
 export async function GET(req: NextRequest) {
-  const auth = req.headers.get("authorization");
-  const password = auth?.replace("Bearer ", "");
-  if (password !== process.env.ADMIN_PASSWORD) {
-    return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
+  try {
+    const auth = req.headers.get("authorization");
+    const password = auth?.replace("Bearer ", "");
+    if (password !== process.env.ADMIN_PASSWORD) {
+      return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
+    }
+    const orders = await getAllOrders();
+    return NextResponse.json({ orders });
+  } catch (err) {
+    console.error("[admin/orders GET]", err);
+    const message = err instanceof Error ? err.message : "Internal server error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-  const orders = await getAllOrders();
-  return NextResponse.json({ orders });
 }
 
 export async function PATCH(req: NextRequest) {
